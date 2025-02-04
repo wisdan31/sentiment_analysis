@@ -1,1 +1,4 @@
 work_data/
+
+*.kv
+*.kv.vectors.npy
