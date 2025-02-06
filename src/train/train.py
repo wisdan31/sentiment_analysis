@@ -7,12 +7,18 @@ import os
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
 from gensim.models import KeyedVectors
+import joblib
+
 
 nltk.download('stopwords')
 nltk.download("punkt")
 nltk.download('punkt_tab')
 nltk.download('wordnet')
+
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
 STOPWORDS = set(stopwords.words('english'))
 
@@ -95,20 +101,64 @@ def process_data():
 
     # Uncomment when deploying and comment other one(!)
     # word2vec = api.load("word2vec-google-news-300")
-    # word2vec = KeyedVectors.load("notebooks/word2vec-google-news-300.kv", mmap='r')
+    word2vec = KeyedVectors.load("notebooks/word2vec-google-news-300.kv", mmap='r')
 
-    logging.debug(f"First 5 rows of X_train: {X_train.head()}")
+    X_train = np.array([get_average_word2vec(review, word2vec) for review in X_train])
+    X_test = np.array([get_average_word2vec(review, word2vec) for review in X_test])
+
+    logging.info("Completed word embedding")
+
 
     y_train = y_train.apply(lambda x: 1 if x == 'positive' else 0)
     y_test = y_test.apply(lambda x: 1 if x == 'positive' else 0)
 
-    train_data = pd.concat([X_train, y_train], axis = 1)
-    test_data = pd.concat([X_test, y_test], axis = 1)
+    # Assuming that X_train and X_test are numpy arrays
+    X_train = pd.DataFrame(X_train)  # No need to specify columns, as it has 300 features
+    X_test = pd.DataFrame(X_test)
+
+
+    # Concatenate the sentiment labels with X_train and X_test
+    train_data = pd.concat([X_train, y_train], axis=1)
+    test_data = pd.concat([X_test, y_test], axis=1)
+
+    # Ensure y_train and y_test have the 'sentiment' column name
+    train_data["sentiment"] = y_train
+    test_data["sentiment"] = y_test
+
+
+    logging.debug(f"First 5 rows of X_train: {train_data.head()}")
 
     os.makedirs("src/data/processed", exist_ok=True)
 
     train_data.to_csv("src/data/processed/train.csv")
     test_data.to_csv("src/data/processed/test.csv")
 
+    logging.info("Saved data")
 
 
+def train_model():
+    reviews_data = pd.read_csv("src/data/processed/train.csv")
+    X = reviews_data.iloc[:, :-1]  # Select all rows and all columns except the last one
+    y = reviews_data.iloc[:, -1]   # Select the last column (sentiment labels)
+
+
+    print(y)
+
+
+    model = LogisticRegression(max_iter=1000)
+    model.fit(X, y)  
+
+    train_accuracy = model.score(X, y)
+    logging.info(f"Training Accuracy: {train_accuracy:.4f}")
+
+    os.makedirs("src/models", exist_ok=True)
+    joblib.dump(model, "src/models/logistic_regression.pkl")
+    logging.info("Model saved successfully.")
+
+    
+
+
+
+if __name__ == "__main__":
+    process_data()
+    train_model()
