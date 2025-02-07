@@ -10,6 +10,7 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from gensim.models import KeyedVectors
+from gensim import downloader as api
 import joblib
 
 
@@ -23,6 +24,12 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %
 STOPWORDS = set(stopwords.words('english'))
 
 lemmatizer = WordNetLemmatizer()
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SRC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RAW_DATA_DIR = os.path.join(SRC_DIR, "data", "raw")
+PROCESSED_DATA_DIR = os.path.join(SRC_DIR, "data", "processed")
+MODELS_DIR = os.path.join(PROJECT_ROOT, "outputs", "models")
 
 def lemmatize_words(text):
     return [lemmatizer.lemmatize(word) for word in text]
@@ -64,8 +71,8 @@ def process_data():
     """
     Processes data for further training
     """
-    train_data_path = "src/data/raw/train.csv"
-    test_data_path = "src/data/raw/test.csv"
+    train_data_path = os.path.join(RAW_DATA_DIR, "train.csv")
+    test_data_path = os.path.join(RAW_DATA_DIR, "test.csv")
 
     train_data = pd.read_csv(train_data_path)
     test_data = pd.read_csv(test_data_path)
@@ -100,8 +107,8 @@ def process_data():
     logging.info("Lemmatized words")
 
     # Uncomment when deploying and comment other one(!)
-    # word2vec = api.load("word2vec-google-news-300")
-    word2vec = KeyedVectors.load("notebooks/word2vec-google-news-300.kv", mmap='r')
+    word2vec = api.load("word2vec-google-news-300")
+    # word2vec = KeyedVectors.load("notebooks/word2vec-google-news-300.kv", mmap='r')
 
     X_train = np.array([get_average_word2vec(review, word2vec) for review in X_train])
     X_test = np.array([get_average_word2vec(review, word2vec) for review in X_test])
@@ -128,16 +135,17 @@ def process_data():
 
     logging.debug(f"First 5 rows of X_train: {train_data.head()}")
 
-    os.makedirs("src/data/processed", exist_ok=True)
 
-    train_data.to_csv("src/data/processed/train.csv")
-    test_data.to_csv("src/data/processed/test.csv")
+    os.makedirs(PROCESSED_DATA_DIR, exist_ok=True)
+
+    train_data.to_csv(os.path.join(PROCESSED_DATA_DIR, "train.csv"))
+    test_data.to_csv(os.path.join(PROCESSED_DATA_DIR, "test.csv"))
 
     logging.info("Saved data")
 
 
 def train_model():
-    reviews_data = pd.read_csv("src/data/processed/train.csv")
+    reviews_data = pd.read_csv(os.path.join(PROCESSED_DATA_DIR, "train.csv"))
     X = reviews_data.iloc[:, :-1]  # Select all rows and all columns except the last one
     y = reviews_data.iloc[:, -1]   # Select the last column (sentiment labels)
 
@@ -151,8 +159,8 @@ def train_model():
     train_accuracy = model.score(X, y)
     logging.info(f"Training Accuracy: {train_accuracy:.4f}")
 
-    os.makedirs("src/models", exist_ok=True)
-    joblib.dump(model, "src/models/logistic_regression.pkl")
+    os.makedirs((MODELS_DIR), exist_ok=True)
+    joblib.dump(model, os.path.join(MODELS_DIR, "model_01.pkl"))
     logging.info("Model saved successfully.")
 
     
