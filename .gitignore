@@ -1,6 +1,7 @@
 work_data/
 data/
 models/
+outputs/
 
 *.kv
 *.kv.vectors.npy
