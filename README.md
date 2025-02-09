@@ -92,10 +92,41 @@ Of course, my results aren't 100% accurate. I could have played more with hyperp
 
 # MLE
 
-## Train
+## Prerequisites
 
-`docker build -f ./src/train/Dockerfile -t sentiment-analysis .` — build image
+### Forking and Cloning from GitHub
 
-`docker run --rm -v ${PWD}/outputs/models:/app/outputs/models sentiment-analysis` — run container. Saved at `outputs/models`
+To start using this project, you first need to get a local copy of this project. U can fork this project to your account, using "Fork" button at the top right part of the projects page, and then get the local copy of this project using `git clone`. After that, you should have this project on your machine with your work directory being project root.
+
+### Docker
+
+This project can be run in two ways: by running all related scripts using IDE or other instrument that allows to run python scripts, or by building Docker images and running Docker containers later on. To run using Docker, you need to install ([Docker Desktop](https://www.docker.com/products/docker-desktop)) — it is available for both Windows and Mac. After downloading the installer, run it, and follow the on-screen instructions. Once the installation is completed, you can open Docker Desktop to confirm it's running correctly. 
+
+## Running project
+
+Each part of project is logging it's actions in the terminal. You can check it to see if script finished or something went wrong.
+
+### Data loading
+
+Firstly, you need to get data to train your model. Simply go to `src/` folder and run `data_loader.py` script — after finishing, new folder named `data` will be created in `src` folder, and all necessary data will be downloaded from cloud.
+
+### Train
+
+To train the model using Docker: 
+
+- Build the training Docker image.:
+```bash
+docker build -f ./src/train/Dockerfile -t sentiment-analysis .  
+```
+- Then, run the container to train your model. After finishing, container will automatically remove itself and you should have model on your local machine in `outputs/models` folder:
+```bash
+docker run --rm -v ${PWD}/outputs/models:/app/outputs/models sentiment-analysis
+```
+
+Alternatively, the `train.py` script can also be run locally as follows:
+
+```bash
+python3 src/train/train.py
+```
 
 ## Inference
