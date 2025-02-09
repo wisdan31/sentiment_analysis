@@ -67,16 +67,19 @@ My local runtime: ~ 1 second
 ### Random Forest Classifier
 
 Accuracy: 0.8100
+
 My local runtime: ~ 70 seconds
 
 ### SVM
 
 Accuracy: 0.8629
+
 My local runtime: ~ 270 seconds
 
 ### Deep learning
 
 Accuracy: 0.8665
+
 My local runtime: ~ 75 seconds
 
 ### Conclusions
