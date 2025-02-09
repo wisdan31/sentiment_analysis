@@ -120,7 +120,10 @@ docker build -f ./src/train/Dockerfile -t sentiment-analysis .
 ```
 - Then, run the container to train your model. After finishing, container will automatically remove itself and you should have model on your local machine in `outputs/models` folder:
 ```bash
-docker run --rm -v ${PWD}/outputs/models:/app/outputs/models sentiment-analysis
+docker run --rm \
+  -v ${PWD}/outputs/models:/app/outputs/models \
+  -v ${PWD}/src/data:/app/src/data \
+  sentiment-analysis
 ```
 
 Alternatively, the `train.py` script can also be run locally as follows:
