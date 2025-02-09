@@ -98,6 +98,8 @@ Of course, my results aren't 100% accurate. I could have played more with hyperp
 
 To start using this project, you first need to get a local copy of this project. U can fork this project to your account, using "Fork" button at the top right part of the projects page, and then get the local copy of this project using `git clone`. After that, you should have this project on your machine with your work directory being project root.
 
+**Note, that all commands provided are for Windows. They can be different on Linux and Mac**
+
 ### Docker
 
 This project can be run in two ways: by running all related scripts using IDE or other instrument that allows to run python scripts, or by building Docker images and running Docker containers later on. To run using Docker, you need to install ([Docker Desktop](https://www.docker.com/products/docker-desktop)) — it is available for both Windows and Mac. After downloading the installer, run it, and follow the on-screen instructions. Once the installation is completed, you can open Docker Desktop to confirm it's running correctly. 
@@ -108,7 +110,13 @@ Each part of project is logging it's actions in the terminal. You can check it t
 
 ### Data loading
 
-Firstly, you need to get data to train your model. Simply go to `src/` folder and run `data_loader.py` script — after finishing, new folder named `data` will be created in `src` folder, and all necessary data will be downloaded from cloud.
+Firstly, you need to get data to train your model. Run:
+
+```bash
+python src/data_loader.py 
+```
+
+Or imply go to `src/` folder and run `data_loader.py` script in your IDE — after finishing, new folder named `data` will be created in `src` folder, and all necessary data will be downloaded from cloud.
 
 ### Train
 
@@ -129,7 +137,7 @@ docker run --rm \
 Alternatively, the `train.py` script can also be run locally as follows:
 
 ```bash
-python3 src/train/train.py
+python src/train/train.py
 ```
 
 ### Inference
@@ -149,7 +157,7 @@ docker run --rm -v ${PWD}/outputs:/app/outputs sentiment-inference
 Alternatively, the `inference.py` script can also be run locally as follows:
 
 ```bash
-python3 src/train/inference.py
+python src/train/inference.py
 ```
 
 P.S: Considering that to test our inference we were guided to use the same test dataset we used, well, for test, the `inference.py` script detects if there is a sentiment column in inference dataset. If there is, it will also log accuracy based on predicted vs true labels
