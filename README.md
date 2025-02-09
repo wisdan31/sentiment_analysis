@@ -6,7 +6,7 @@
 
 This project works with dataset for binary sentiment classification. It provides a set of 50,000 polar movie reviews for training and testing.
 
-Firstly, downlodd and import everything that will be used
+Firstly, download and import everything that will be used
 
 ## EDA
 
@@ -104,7 +104,7 @@ This project can be run in two ways: by running all related scripts using IDE or
 
 ## Running project
 
-Each part of project is logging it's actions in the terminal. You can check it to see if script finished or something went wrong.
+Each part of project is logging it's actions in the terminal. You can check it to see if script finished or something went wrong.**Note, that model metrics will also appear in logs**
 
 ### Data loading
 
@@ -114,7 +114,7 @@ Firstly, you need to get data to train your model. Simply go to `src/` folder an
 
 To train the model using Docker: 
 
-- Build the training Docker image.:
+- Build the training Docker image:
 ```bash
 docker build -f ./src/train/Dockerfile -t sentiment-analysis .  
 ```
@@ -129,4 +129,24 @@ Alternatively, the `train.py` script can also be run locally as follows:
 python3 src/train/train.py
 ```
 
-## Inference
+### Inference
+
+Once a model has been trained, it can be used to make predictions on new data in the inference stage. The inference stage is implemented in `inference/run.py`.
+
+- Build the inference Docker image:
+```bash
+docker build -f ./src/inference/Dockerfile -t sentiment-inference . 
+```
+
+- Then, run the container to inference on new, unseen data . After finishing, container will automatically remove itself and you should have inference results on your local machine in `outputs/results` folder:
+```bash
+docker run --rm -v ${PWD}/outputs:/app/outputs sentiment-inference
+```
+
+Alternatively, the `inference.py` script can also be run locally as follows:
+
+```bash
+python3 src/train/inference.py
+```
+
+P.S: Considering that to test our inference we were guided to use the same test dataset we used, well, for test, the `inference.py` script detects if there is a sentiment column in inference dataset. If there is, it will also log accuracy based on predicted vs true labels
