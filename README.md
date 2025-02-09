@@ -108,7 +108,13 @@ Each part of project is logging it's actions in the terminal. You can check it t
 
 ### Data loading
 
-Firstly, you need to get data to train your model. Simply go to `src/` folder and run `data_loader.py` script — after finishing, new folder named `data` will be created in `src` folder, and all necessary data will be downloaded from cloud.
+Firstly, you need to get data to train your model. Run:
+
+```bash
+python3 src/data_loader.py 
+```
+
+Or imply go to `src/` folder and run `data_loader.py` script in your IDE — after finishing, new folder named `data` will be created in `src` folder, and all necessary data will be downloaded from cloud.
 
 ### Train
 
