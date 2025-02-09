@@ -98,6 +98,8 @@ Of course, my results aren't 100% accurate. I could have played more with hyperp
 
 To start using this project, you first need to get a local copy of this project. U can fork this project to your account, using "Fork" button at the top right part of the projects page, and then get the local copy of this project using `git clone`. After that, you should have this project on your machine with your work directory being project root.
 
+**Note, that all commands provided are for Windows. They can be different on Linux and Mac**
+
 ### Docker
 
 This project can be run in two ways: by running all related scripts using IDE or other instrument that allows to run python scripts, or by building Docker images and running Docker containers later on. To run using Docker, you need to install ([Docker Desktop](https://www.docker.com/products/docker-desktop)) — it is available for both Windows and Mac. After downloading the installer, run it, and follow the on-screen instructions. Once the installation is completed, you can open Docker Desktop to confirm it's running correctly. 
