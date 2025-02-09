@@ -31,19 +31,19 @@ def run_inference():
     test_data = load_test_data()
 
     X_test = test_data.iloc[:, :-1]  # Features
-    y_true = test_data.iloc[:, -1]   # True labels
+    y_true = test_data.iloc[:, -1] if "sentiment" in test_data.columns else None  # True labels if available
 
     # Make predictions
     y_pred = model.predict(X_test)
 
-    # Calculate accuracy
-    accuracy = accuracy_score(y_true, y_pred)
-    logging.info(f"Model Accuracy on Test Data: {accuracy:.4f}")
-
     # Save results
     os.makedirs(RESULTS_DIR, exist_ok=True)
-    results_df = pd.DataFrame({"True Sentiment": y_true, "Predicted Sentiment": y_pred})
+    results_df = pd.DataFrame({"review": test_data.iloc[:, 0], "Predicted Sentiment": y_pred})
     results_df.to_csv(os.path.join(RESULTS_DIR, "inference_results.csv"), index=False)
+
+    if y_true is not None:
+        accuracy = accuracy_score(y_true, y_pred)
+        logging.info(f"Model Accuracy on Inference Data: {accuracy:.4f}")
 
     logging.info(f"Inference results saved to {os.path.join(RESULTS_DIR, 'inference_results.csv')}")
 
