@@ -111,7 +111,7 @@ Each part of project is logging it's actions in the terminal. You can check it t
 Firstly, you need to get data to train your model. Run:
 
 ```bash
-python3 src/data_loader.py 
+python src/data_loader.py 
 ```
 
 Or imply go to `src/` folder and run `data_loader.py` script in your IDE — after finishing, new folder named `data` will be created in `src` folder, and all necessary data will be downloaded from cloud.
@@ -132,7 +132,7 @@ docker run --rm -v ${PWD}/outputs/models:/app/outputs/models sentiment-analysis
 Alternatively, the `train.py` script can also be run locally as follows:
 
 ```bash
-python3 src/train/train.py
+python src/train/train.py
 ```
 
 ### Inference
@@ -152,7 +152,7 @@ docker run --rm -v ${PWD}/outputs:/app/outputs sentiment-inference
 Alternatively, the `inference.py` script can also be run locally as follows:
 
 ```bash
-python3 src/train/inference.py
+python src/train/inference.py
 ```
 
 P.S: Considering that to test our inference we were guided to use the same test dataset we used, well, for test, the `inference.py` script detects if there is a sentiment column in inference dataset. If there is, it will also log accuracy based on predicted vs true labels
