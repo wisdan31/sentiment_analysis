@@ -14,6 +14,14 @@ This project can be run in two ways: by running all related scripts using IDE or
 
 Each part of project is logging it's actions in the terminal. You can check it to see if script finished or something went wrong.**Note, that model metrics will also appear in logs**
 
+## Setup & Installation
+
+If you will use Docker, you can skip this step. If you will run scripts, directly, before running the project, ensure that all required dependencies are installed. You can do this by running:
+
+```bash
+pip install --no-cache-dir -r requirements.txt
+```
+
 ## Data loading
 
 Firstly, you need to get data to train your model. Run:
