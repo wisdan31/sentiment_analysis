@@ -4,6 +4,7 @@ import re
 import nltk
 import logging
 import os
+from pathlib import Path
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -25,7 +26,11 @@ STOPWORDS = set(stopwords.words('english'))
 
 lemmatizer = WordNetLemmatizer()
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+from src.c
+
+
 SRC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW_DATA_DIR = os.path.join(SRC_DIR, "data", "raw")
 PROCESSED_DATA_DIR = os.path.join(SRC_DIR, "data", "processed")

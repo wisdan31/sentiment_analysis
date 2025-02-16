@@ -3,5 +3,7 @@ data/
 models/
 outputs/
 
+test.py
+
 *.kv
 *.kv.vectors.npy
